@@ -4,7 +4,7 @@
 const savePosts = (objectPost) => {
     $.ajax({
         method: "POST",
-        url: "https://ajaxclass-1ca34.firebaseio.com/11g/teamd/posts/.json",
+        url: "http://localhost:8080/posts",
         data: JSON.stringify(objectPost),
         success: (response) => {
             console.log(response);
@@ -77,7 +77,7 @@ const saveReplies = (objectReply) => {
     //$(event.target).data("mentorkey");
     $.ajax({
         method: "POST",
-        url: "https://ajaxclass-1ca34.firebaseio.com/11g/teamd/replies/.json",
+        url: "http://localhost:8080/replies",
         data: JSON.stringify(objectReply),
         success: (response) => {
             console.log(response);
@@ -93,10 +93,10 @@ const getReplies = () => {
     let dbReplies;
     $.ajax({
         method: "GET",
-        url: "https://ajaxclass-1ca34.firebaseio.com/11g/teamd/replies/.json",
+        url: "http://localhost:8080/replies",
         success: (response) => {
 
-            dbReplies = response;
+            dbReplies = response.data.replies;
         },
         error: (error) => {
             console.log(error);
@@ -146,9 +146,9 @@ const getUser = (key) => {
     let dbUser = {}
     $.ajax({
       method: "GET",
-      url: `https://ajaxclass-1ca34.firebaseio.com/11g/teamd/users/${key}/.json`,
+      url: `http://localhost:8080/users/${key}`,
       success: (response) => {
-        dbUser = response;
+        dbUser = response.data.users;
       },
       error: (error) => {
         console.log(error);
@@ -692,6 +692,7 @@ const getPost = (postKey) => {
 
 //Print replies function
 const printReplies = (postId) => {
+    console.log('print replies: ', postId)
     $(`#replies-wrapper li`).remove();
     let replies = getReplies();
     let repliesByPost = {};
@@ -726,8 +727,8 @@ const printReplies = (postId) => {
                                         
                                         <p class="mb-0 text-muted comment-text">${repliesByPost[key].content}</p>
                                         <p class="mb-0 text-right text-muted comment-date">
-                                            <span class="date">${repliesByPost[key].creationDate}</span> 
-                                            <span class="time">${repliesByPost[key].creationTime}</span>   
+                                            <span class="date">${moment(repliesByPost[key].creationDate).format('L')}</span> 
+                                            <span class="time">${moment(repliesByPost[key].creationDate).format('LT')}</span>   
                                         </p>
                                     </div>
                                 </li>
@@ -758,7 +759,7 @@ const printReplies = (postId) => {
   };
 
 const printSinglePost = (data) => {
-    
+    console.log('enprintsingle', data)
     postAuthor = getAutor(data.userId, getUsers())  
     console.log(data.content);
     console.log(data.coverUrl);
@@ -789,8 +790,8 @@ const printSinglePost = (data) => {
         
     }
     
-    $(".btn-save-replie").attr("data-commentkey", data.postId);
-    printReplies(data.postId);
+    $(".btn-save-replie").attr("data-commentkey", data._id);
+    printReplies(data._id);
 }
     //printSinglePost(getPost(postKey));
     //printSinglePost(getPost("-MYsPw9-8lhLZSCvtuRs"));
@@ -906,7 +907,8 @@ const newPost = () =>{
         $(`#tagsHelp`).attr("hidden", true);
     }
     if(sendForm){
-        newPostData = {...newPostData, tags: tagArray, userId : activeID, creationDate: moment().format('DD/MM/YYYY'), creationTime: moment().format('h:mm'), postId : Date.now(), likes: 0}
+        newPostData = {...newPostData, tags: tagArray, userId : activeID, creationDate: moment().format('DD/MM/YYYY'), likes: 0}
+        console.log(newPostData)
         $('#write-new-post')[0].reset()
         savePosts(newPostData)
         loadView('views/home.html','home')
@@ -982,10 +984,8 @@ $('.total-container').on('click','.btn-save-replie',function(event){
         newReply={
             content: comment,
             creationDate: moment().format("l"),
-            creationTime: moment().format("LT"),
             post: postId,
-            userId: activeID,
-            replyId: Date.now()
+            userId: activeID
         }
         console.log(postId,comment,activeID,newReply)
         $(`#post-reply`).val("");
