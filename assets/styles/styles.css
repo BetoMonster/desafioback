@@ -669,6 +669,10 @@ header .nav .nav-item .active:hover::after {
   margin: 1px;
 }
 
+#right-menu a {
+  font-weight: bold;
+}
+
 .post {
   overflow: hidden;
 }
