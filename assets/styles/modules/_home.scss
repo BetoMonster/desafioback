@@ -92,20 +92,19 @@
 header {
     h3 {
         font-size: 22px;
+        font-weight: bold;
     }
 .nav{
     
     .nav-item{
         padding: 4px 0;
 
-
         &:hover{
             background-color:rgba(50, 62, 189, 0.212);
         } 
         .nav-link{
-
+            font-size: 12pt;
             color: $content-text;
-
         }
         
         position: relative;
@@ -117,7 +116,7 @@ header {
             &::after{
                 content: "";
                 position: absolute;
-                top: 2rem;
+                bottom: 0;
                 left: 0rem;
                 width: 50%;
                 height: 0.2rem;
@@ -135,6 +134,23 @@ header {
         }
     }
 }
+}
+
+#right-menu{
+    min-width: 15rem;
+    padding: 0;
+    position: absolute;
+    right: 3%;
+    z-index: 1000;
+    top: 8%;
+    background-color: #fff;
+
+    #users-item-wrapper{
+      border-bottom: 1px solid #b5bdc4;
+    }
+    hr{
+      margin: 1px;
+    }
 }
 
 .post {
@@ -209,6 +225,15 @@ header {
         p {
             font-size: 12px;
             color: $icon-black;
+        }
+
+        .btn-save{
+            padding: 0.5rem;
+            margin-left: 0.5rem;
+            border: 0;
+            background-color: #d2d6db;
+            border-radius: 5px;
+            color: #4d5760;
         }
 
         .interactions {

@@ -489,7 +489,7 @@ const printHome = (allPostsToPrint) => {
                     </div>
                     <div class="d-flex align-items-center">
                         <p class="mb-0">${duration}</p>
-                        <button class="ml-2 btn btn btn-outline-secondary">Save</button>
+                        <button class="ml-2 btn btn btn-outline-secondary btn-save">Save</button>
                     </div>
                 </div>
             </div>`
@@ -531,7 +531,7 @@ const printHome = (allPostsToPrint) => {
                 </div>
                 <div class="d-flex align-items-center">
                     <p class="mb-0">${duration}</p>
-                    <button class="ml-2 btn btn btn-outline-secondary">Save</button>
+                    <button class="ml-2 btn btn btn-outline-secondary btn-save">Save</button>
                 </div>
             </div>
         </div>`

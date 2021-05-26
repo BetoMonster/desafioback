@@ -367,10 +367,6 @@ p {
   margin-bottom: 16px;
 }
 
-ul {
-  padding: 0 20px;
-}
-
 ul li {
   font-size: 18px;
 }
@@ -614,6 +610,7 @@ textarea {
 
 header h3 {
   font-size: 22px;
+  font-weight: bold;
 }
 
 header .nav .nav-item {
@@ -626,6 +623,7 @@ header .nav .nav-item:hover {
 }
 
 header .nav .nav-item .nav-link {
+  font-size: 12pt;
   color: #08090a;
 }
 
@@ -637,7 +635,7 @@ header .nav .nav-item .active {
 header .nav .nav-item .active::after {
   content: "";
   position: absolute;
-  top: 2rem;
+  bottom: 0;
   left: 0rem;
   width: 50%;
   height: 0.2rem;
@@ -651,6 +649,24 @@ header .nav .nav-item .active::after {
 header .nav .nav-item .active:hover::after {
   margin-left: 0;
   width: 100%;
+}
+
+#right-menu {
+  min-width: 15rem;
+  padding: 0;
+  position: absolute;
+  right: 3%;
+  z-index: 1000;
+  top: 8%;
+  background-color: #fff;
+}
+
+#right-menu #users-item-wrapper {
+  border-bottom: 1px solid #b5bdc4;
+}
+
+#right-menu hr {
+  margin: 1px;
 }
 
 .post {
@@ -723,6 +739,15 @@ header .nav .nav-item .active:hover::after {
 .post .post-interactions p {
   font-size: 12px;
   color: #64707d;
+}
+
+.post .post-interactions .btn-save {
+  padding: 0.5rem;
+  margin-left: 0.5rem;
+  border: 0;
+  background-color: #d2d6db;
+  border-radius: 5px;
+  color: #4d5760;
 }
 
 .post .post-interactions .interactions {
