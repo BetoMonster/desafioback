@@ -521,7 +521,7 @@ const printHome = (allPostsToPrint) => {
                 <img src=${postAuthor.userPic} alt="" class="rounded-circle profile-p ml-3" />
                 <div class="author-info ml-2">
                     <p>${postAuthor.userName}</p>
-                    <p>${creationDate}  ${creationTime} - ${moment(`${creationDate}`, "DD/MM/YYYY").fromNow()}</p>
+                    <p>${moment(creationDate).format('L')}  ${moment(creationDate).format('LT')} - ${moment(creationDate).startOf('day').fromNow()}</p>
                 </div>
             </div>
             <a href="#">
