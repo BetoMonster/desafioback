@@ -1041,11 +1041,11 @@ const printAside = () => {
         $('.right-aside-wrapper').append(asides)
         }
     }
-    let asideButtons = `<div class="py-4 d-flex flex-column">
-    <button type="button" class="btn btn-blue mb-3 mx-auto w-75">
+    let asideButtons = `<div class="py-3 px-3 d-flex flex-column">
+    <button type="button" class="btn btn-blue mb-3 w-100">
       Share your story
     </button>
-    <button type="button" class="btn btn-grey mx-auto w-75">See all posts</button>
+    <button type="button" class="btn btn-grey w-100">See all posts</button>
   </div>`
     $('.right-aside-wrapper').append(asideButtons)
 
