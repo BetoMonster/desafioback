@@ -120,8 +120,8 @@ const saveUsers = (objectUser) => {
         data: JSON.stringify(objectUser),
         success: (response) => {
             console.log(response);
-            let aU = getUser(response.name)
-            setActiveUser(aU)
+            //let aU = getUser(response.name)
+            setActiveUser(response.data.users)
         },
         error: (error) => {
             console.log(error);
@@ -462,14 +462,14 @@ const printHome = (allPostsToPrint) => {
             creationTime,
             duration,
             likes,
-            _id,
+            _id:postId,
             tags,
             title,
             userId
         } = allPostsToPrint[key]
 
         
-        let postId = allPostsToPrint[key]._id
+        //let postId = allPostsToPrint[key]._id
         
         let detalle = '#'
         let numberOfComments = 0
@@ -620,7 +620,7 @@ const getNewAccount = ()=>{
         }    
     })
     if(sendForm){
-        newAccount = {...newAccount, userId: new Date().getTime()}
+        newAccount = {...newAccount}
         //console.log(newAccount)
         $('#newAccount')[0].reset();
         saveUsers(newAccount)
@@ -629,8 +629,8 @@ const getNewAccount = ()=>{
         return false
     }
 
-    newAccount = {...newAccount, userId: new Date().getTime()}
-    saveUsers(newAccount)
+    //newAccount = {...newAccount, userId: new Date().getTime()}
+    //saveUsers(newAccount)
 }
 
 //Function Search Posts
