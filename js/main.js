@@ -2,6 +2,7 @@
 
 // -------- CRUD POSTS -----------
 const savePosts = (objectPost) => {
+    console.log(JSON.stringify(objectPost))
     $.ajax({
         method: "POST",
         url: "http://localhost:8080/posts",
@@ -12,6 +13,7 @@ const savePosts = (objectPost) => {
         error: (error) => {
             console.log(error);
         },
+        async: false
     });
 };
 //
@@ -358,6 +360,7 @@ const checkUserExist = () => {
 }
 var activeID
 const setActiveUser = userData => {
+    console.log('setActiveUSer: ', userData)
     if (l.length === 0){
         const {
             description,
@@ -365,7 +368,7 @@ const setActiveUser = userData => {
             location,
             mail,
             password,
-            userId,
+            _id,
             userName,
             userNickname,
             userPic
@@ -373,7 +376,7 @@ const setActiveUser = userData => {
         $('#avt').attr('src', userPic)
         $('#active-user-name').text(userName)
         $('#active-user-nickname').text(userNickname)
-        activeID = userId
+        activeID = _id
         loadView("./views/home.html", "home")
     }
     else{
@@ -908,7 +911,7 @@ const newPost = () =>{
         $(`#tagsHelp`).attr("hidden", true);
     }
     if(sendForm){
-        newPostData = {...newPostData, tags: tagArray, userId : activeID, creationDate: moment().format('DD/MM/YYYY'), likes: 0}
+        newPostData = {...newPostData, tags: tagArray, userId : activeID}
         console.log(newPostData)
         $('#write-new-post')[0].reset()
         savePosts(newPostData)
