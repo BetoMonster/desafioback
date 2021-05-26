@@ -14,14 +14,16 @@ const savePosts = (objectPost) => {
         },
     });
 };
-
+//
 const getPosts = () => {
+    const prevUrl = "https://ajaxclass-1ca34.firebaseio.com/11g/teamd/posts/.json"
     let dbPosts = [];
     $.ajax({
         method: "GET",
-        url: "https://ajaxclass-1ca34.firebaseio.com/11g/teamd/posts/.json",
+        url: "http://localhost:8080/posts",
         success: (response) => {
-            dbPosts = response
+            //console.log(response.data.posts)
+            dbPosts = response.data.posts
         },
         error: (error) => {
             console.log(error);
@@ -30,6 +32,7 @@ const getPosts = () => {
     });
     return dbPosts;
 };
+
 const patchPost = (event, newVal, newKey) => {
     let postKey = event.target.dataset.postkey
     let postLike = event.target
@@ -125,10 +128,9 @@ const getUsers = () => {
     let dbUsers;
     $.ajax({
         method: "GET",
-        url: "https://ajaxclass-1ca34.firebaseio.com/11g/teamd/users/.json",
+        url: "http://localhost:8080/users",
         success: (response) => {
-
-            dbUsers = response;
+            dbUsers = response.data.users;
         },
         error: (error) => {
             console.log(error);
@@ -203,21 +205,25 @@ const deleteUser = (key) => {
 
 //-------------LÓGICA ------------
 const getAutor = (userId, users) => {
+   // console.log('los users',users)
     let newUser = {};
     //let users = getUsers();
     for (ky in users) {
-        if (users[ky].userId == userId) {
+        if (users[ky]._id == userId) {
             newUser["userName"] = users[ky].userName;
             newUser["userPic"] = users[ky].userPic;
-            newUser["userId"] = users[ky].userId;
+            newUser["userId"] = users[ky]._id;
             newUser["description"] = users[ky].description;
             newUser["location"] = users[ky].location;
             newUser["work"] = users[ky].work;
             newUser["userNickname"] = users[ky].userNickname;
         }
     }
+    //console.log('user', newUser)
     return newUser;
 };
+
+
 
 const filterByID = (id, coll) => {
     let userFiltered = {}
@@ -443,11 +449,15 @@ const printHome = (allPostsToPrint) => {
             creationTime,
             duration,
             likes,
-            postId,
+            _id,
             tags,
             title,
             userId
         } = allPostsToPrint[key]
+
+        
+        let postId = allPostsToPrint[key]._id
+        
         let detalle = '#'
         let numberOfComments = 0
         postAuthor = getAutor(userId, getUsers())
@@ -463,11 +473,11 @@ const printHome = (allPostsToPrint) => {
                     <img src="${postAuthor.userPic}" alt="" class="rounded-circle profile-p ml-3" />
                     <div class="author-info ml-2">
                     <p>${postAuthor.userName}</p>
-                    <p>${creationDate}  ${creationTime} - ${moment(`${creationDate}`, "DD/MM/YYYY").fromNow()}</p>
+                    <p>${moment(creationDate).format('L')}  ${moment(creationDate).format('LT')} - ${moment(creationDate).startOf('day').fromNow()}</p>
                     </div>
                 </div>
                 <a href="${detalle}">
-                    <h1 class="ml-3 font-weight-bold"><a href="#" data-post-key="${key}" class="btn-title">${title}</a></h1>
+                    <h1 class="ml-3 font-weight-bold"><a href="#" data-post-key="${postId}" class="btn-title">${title}</a></h1>
                 </a>
                 <ul class="h-post d-flex w-100 flex-wrap category-wrapper" data-postId = ${postId}>
                     <li><a href="#">Primer Tag de Prueba</a></li>
@@ -478,7 +488,7 @@ const printHome = (allPostsToPrint) => {
                         <div>
                             <img src="Images/heart2red.svg" class="red-heart" alt="like" />
                             <img src="Images/heart2.svg" alt="like" />
-                            <a class = 'likes-anchor text-muted' data-postkey = ${key}>${likes}</a>
+                            <a class = 'likes-anchor text-muted' data-postkey = ${postId}>${likes}</a>
                             <span class="d-none d-md-inline">reactions</span>
                         </div>
                         <div>
@@ -509,7 +519,7 @@ const printHome = (allPostsToPrint) => {
                 </div>
             </div>
             <a href="#">
-                <h1 class="ml-3 font-weight-bold"><a href="#" data-post-key="${key}" class="btn-title">${title}</a></h1>
+                <h1 class="ml-3 font-weight-bold"><a href="#" data-post-key="${postId}" class="btn-title">${title}</a></h1>
             </a>
             <ul class="h-post d-flex w-100 flex-wrap category-wrapper" data-postId = ${postId}>
                 <li><a href="#">Primer Tag de Prueba</a></li>
@@ -520,7 +530,7 @@ const printHome = (allPostsToPrint) => {
                     <div>
                         <img src="Images/heart2red.svg" class="red-heart" alt="like" />    
                         <img src="Images/heart2.svg" alt="like" />
-                        <a class = 'likes-anchor text-muted' data-postkey = ${key}>${likes}</a>
+                        <a class = 'likes-anchor text-muted' data-postkey = ${postId}>${likes}</a>
                         <span class="d-none d-md-inline">reactions</span>
                     </div>
                     <div>
@@ -664,10 +674,10 @@ const getPost = (postKey) => {
   let dbPost = {};
   $.ajax({
     method: "GET",
-    url: `https://ajaxclass-1ca34.firebaseio.com/11g/teamd/posts/${postKey}.json`,
+    url: `http://localhost:8080/posts/${postKey}`,
     success: (response) => {
-      console.log(response);
-      dbPost = response;
+      
+      dbPost = response.data.posts;
       
     },
     error: (error) => {
@@ -748,7 +758,7 @@ const printReplies = (postId) => {
   };
 
 const printSinglePost = (data) => {
-
+    
     postAuthor = getAutor(data.userId, getUsers())  
     console.log(data.content);
     console.log(data.coverUrl);
@@ -759,7 +769,7 @@ const printSinglePost = (data) => {
     
     $(".post-wrapper .content").html(data.content);
     $(".post-wrapper .post-avatar").attr("src", postAuthor.userPic);
-    let dateCreationHtml = `${postAuthor.userName} <span class="ml-3 " >${data.creationDate} ・ ${data.duration} read</span>`;
+    let dateCreationHtml = `${postAuthor.userName} <span class="ml-3 " >${moment(data.creationDate).format('L')} ${moment(data.creationDate).format('LT')} ・ ${data.duration} read</span>`;
     $(".post-wrapper .post-creation").html(dateCreationHtml);
     
     $('.post-wrapper .post-tags').html("")  
