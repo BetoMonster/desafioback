@@ -82,6 +82,7 @@ const saveReplies = (objectReply) => {
     $.ajax({
         method: "POST",
         url: "http://localhost:8080/replies",
+        contentType : "application/json",
         data: JSON.stringify(objectReply),
         success: (response) => {
             console.log(response);
@@ -114,7 +115,8 @@ const getReplies = () => {
 const saveUsers = (objectUser) => {
     $.ajax({
         method: "POST",
-        url: "https://ajaxclass-1ca34.firebaseio.com/11g/teamd/users/.json",
+        url: "http://localhost:8080/users",
+        contentType : "application/json",
         data: JSON.stringify(objectUser),
         success: (response) => {
             console.log(response);
@@ -245,7 +247,10 @@ let principalContainer = $('.total-container')
 let activeUser = {}
 let singlePostKey = ''
 $(document).ready(function () {
-    loadView("./views/landing.html", "landing")    
+    loadView("./views/landing.html", "landing")   
+    if(!activeUser._id){
+        $('.img-wrpr').hide() 
+    } 
 })
 $('.bttn-write').click(() => {
     loadView('./views/createPost.html')
@@ -354,23 +359,22 @@ const checkUserExist = () => {
     })
     inputGroup.val('')
     allUsers = getUsers()
-    $.each(allUsers, (idx, current) => {
-        //userExists.usermail === current.mail && userExists.userpassword === current.password ? activeUser = current : null
-        userExists.usermail === current.mail? activeUser = current : null
-    })
-    activeUser.userId != '' ? setActiveUser(activeUser) : alert("Nombre de usuario y/o contraseña incorrectos.")
+    activeUser= allUsers.find(current=>{return userExists.usermail === current.mail})
+    activeUser ? setActiveUser(activeUser): alert("Nombre de usuario y/o contraseña incorrectos.")
+    //console.log('ActiveUSer: ', activeUser)
+    
 }
 var activeID
 const setActiveUser = userData => {
-    console.log('setActiveUSer: ', userData)
-    if (l.length === 0){
+    //console.log('setActiveUSer: ', userData)
+    //if (l.length === 0){
         const {
             description,
             joined,
             location,
             mail,
             password,
-            _id,
+            _id:userId,
             userName,
             userNickname,
             userPic
@@ -378,14 +382,17 @@ const setActiveUser = userData => {
         $('#avt').attr('src', userPic)
         $('#active-user-name').text(userName)
         $('#active-user-nickname').text(userNickname)
-        activeID = _id
+        console.log('ID user: ', userId)
+        activeID = userId
         loadView("./views/home.html", "home")
-    }
+        $('.img-wrpr').show()
+   /* }
     else{
         $('#avt').attr('src', l.getItem('AvtImg'))
         $('#active-user-name').text(l.getItem('newUsN'))
         $('#active-user-nickname').text(l.getItem('newUsNname'))
-    }
+        
+    }*/
     
 }
 
@@ -790,7 +797,7 @@ const printSinglePost = (data) => {
     $(".total-container .perfil-work").html(postAuthor.work);
     $(".total-container .perfil-location").html(postAuthor.location);
     //$(".total-container .perfil-name").html(postAuthor.userNickname);
-    if(activeID>0){
+    if(activeID){
         userComment = getAutor(activeID, getUsers())        
         $(".post-wrapper .post-user-avatar").attr("src", userComment.userPic);
         
@@ -987,10 +994,9 @@ $('.total-container').on('click','.btn-save-replie',function(event){
     let postId = $(event.target).data("commentkey");
     let comment = $(`#post-reply`).val();
     
-    if(activeID>0){
+    if(activeID){
         newReply={
             content: comment,
-            creationDate: moment().format("l"),
             post: postId,
             userId: activeID
         }
@@ -1082,23 +1088,23 @@ $('.total-container').on('click', '.go-to-detail', function (event) {
 let l = localStorage
 $('.total-container').on('focusout', '#userPic' ,function(){
     l.setItem('AvtImg', $('#userPic').val())
-    console.log(l.getItem('AvtImg'))
+    //console.log(l.getItem('AvtImg'))
 })
 $('.total-container').on('focusout', '#mail' ,function(){
     l.setItem('mail', $('#mail').val())
-    console.log(l.getItem('mail'))
+    //console.log(l.getItem('mail'))
 })
 $('.total-container').on('focusout', '#password' ,function(){
     l.setItem('psd', $('#password').val())
-    console.log(l.getItem('psd'))
+    //console.log(l.getItem('psd'))
 })
 $('.total-container').on('focusout', '#userName' ,function(){
     l.setItem('newUsN', $('#userName').val())
-    console.log(l.getItem('newUsN'))
+    //console.log(l.getItem('newUsN'))
 })
 $('.total-container').on('focusout', '#userNickName' ,function(){
     l.setItem('newUsNname', $('#userNickName').val())
-    console.log(l.getItem('newUsNname'))
+   // console.log(l.getItem('newUsNname'))
 })
 $('#devto-logo').on('click', '#devto-logo',function(){
     l.length != 0 ? l.setItem('ID', activeID) : null
