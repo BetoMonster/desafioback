@@ -652,21 +652,50 @@ header .nav .nav-item .active:hover::after {
 }
 
 #right-menu {
-  min-width: 15rem;
-  padding: 0;
-  position: absolute;
-  right: 3%;
-  z-index: 1000;
-  top: 8%;
-  background-color: #fff;
+  width: 15rem;
 }
 
-#right-menu #users-item-wrapper {
+#right-menu .container-login {
   border-bottom: 1px solid #b5bdc4;
+  padding: 0 4%;
+  margin-top: 4%;
 }
 
-#right-menu hr {
-  margin: 1px;
+#right-menu .container-login > div {
+  border-radius: 5px;
+  padding: 8px 10px;
+  margin-bottom: 8px;
+}
+
+#right-menu .container-login > div:hover {
+  background: #e9ecef;
+}
+
+#right-menu .container-home {
+  border-bottom: 1px solid #b5bdc4;
+  padding: 0 4%;
+  margin-top: 4%;
+}
+
+#right-menu .container-home > div {
+  border-radius: 5px;
+  padding: 8px 10px;
+  margin-bottom: 8px;
+}
+
+#right-menu .container-logout {
+  padding: 0 4%;
+  margin-top: 4%;
+}
+
+#right-menu .container-logout > div {
+  border-radius: 5px;
+  padding: 8px 10px;
+  margin-bottom: 8px;
+}
+
+#right-menu .container-logout > div:hover {
+  background: #e9ecef;
 }
 
 #right-menu a {
