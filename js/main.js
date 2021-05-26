@@ -6,7 +6,9 @@ const savePosts = (objectPost) => {
     $.ajax({
         method: "POST",
         url: "http://localhost:8080/posts",
+        contentType : "application/json",
         data: JSON.stringify(objectPost),
+        dataType : 'json',
         success: (response) => {
             console.log(response);
         },
@@ -913,9 +915,10 @@ const newPost = () =>{
     if(sendForm){
         newPostData = {...newPostData, tags: tagArray, userId : activeID}
         console.log(newPostData)
-        $('#write-new-post')[0].reset()
+        
         savePosts(newPostData)
-        loadView('views/home.html','home')
+        //$('#write-new-post')[0].reset()
+        //loadView('views/home.html','home')
     }else{
         return false
     }    
