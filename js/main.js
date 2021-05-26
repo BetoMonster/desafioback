@@ -1027,7 +1027,7 @@ const printAside = () => {
         } = postList[post]
 
         if (post === firstPostKey) {
-            let asideFirst =` <a class ='go-to-detail'><img class="w-100" src="${coverUrl}" alt="card-img" data-postkey="${post}"></a>
+            let asideFirst =` <a class ='go-to-detail'><img class="w-100" src="https://challenge-devto-e8kjdgmde-mgbelmont.vercel.app/images/single/image_side_right.png" alt="card-img" data-postkey="${post}"></a>
 
             <header class="py-3 border-bottom">
               <a href="#">
