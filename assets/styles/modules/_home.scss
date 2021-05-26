@@ -136,21 +136,43 @@ header {
 }
 
 #right-menu{
-    min-width: 15rem;
-    padding: 0;
-    position: absolute;
-    right: 3%;
-    z-index: 1000;
-    top: 8%;
-    background-color: #fff;
+    width: 15rem;
 
-    #users-item-wrapper{
-      border-bottom: 1px solid #b5bdc4;
+    .container-login{
+        border-bottom: 1px solid #b5bdc4;
+        padding: 0 4%;
+        margin-top: 4%;
+        & > div{
+            border-radius: 5px;
+            padding: 8px 10px;
+            margin-bottom: 8px;
+            &:hover{
+                background: #e9ecef;
+            }
+        }
     }
-    hr{
-      margin: 1px;
+    .container-home{
+        border-bottom: 1px solid #b5bdc4;
+        padding: 0 4%;
+        margin-top: 4%;
+        & > div{
+            border-radius: 5px;
+            padding: 8px 10px;
+            margin-bottom: 8px;
+        }
     }
-
+    .container-logout{
+        padding: 0 4%;
+        margin-top: 4%;
+        & > div{
+            border-radius: 5px;
+            padding: 8px 10px;
+            margin-bottom: 8px;
+            &:hover{
+                background: #e9ecef;
+            }
+        }
+    }
     a{
         font-weight: bold;
     }
