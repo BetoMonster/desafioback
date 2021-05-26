@@ -351,9 +351,10 @@ const checkUserExist = () => {
     inputGroup.val('')
     allUsers = getUsers()
     $.each(allUsers, (idx, current) => {
-        userExists.usermail === current.mail && userExists.userpassword === current.password ? activeUser = current : null
+        //userExists.usermail === current.mail && userExists.userpassword === current.password ? activeUser = current : null
+        userExists.usermail === current.mail? activeUser = current : null
     })
-    activeUser.userId > 0 ? setActiveUser(activeUser) : alert("Nombre de usuario y/o contraseña incorrectos.")
+    activeUser.userId != '' ? setActiveUser(activeUser) : alert("Nombre de usuario y/o contraseña incorrectos.")
 }
 var activeID
 const setActiveUser = userData => {
