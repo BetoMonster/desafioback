@@ -2,16 +2,20 @@
 
 // -------- CRUD POSTS -----------
 const savePosts = (objectPost) => {
+    //console.log(JSON.stringify(objectPost))
     $.ajax({
         method: "POST",
-        url: "https://ajaxclass-1ca34.firebaseio.com/11g/teamd/posts/.json",
+        url: "http://localhost:8080/posts",
+        contentType : "application/json",
         data: JSON.stringify(objectPost),
+        dataType : 'json',
         success: (response) => {
-            console.log(response);
+            //console.log(response);
         },
         error: (error) => {
             console.log(error);
         },
+        async: false
     });
 };
 //
@@ -36,17 +40,17 @@ const getPosts = () => {
 const patchPost = (event, newVal, newKey) => {
     let postKey = event.target.dataset.postkey
     let postLike = event.target
-    console.log(postKey)
-    console.log(newVal)
+    //console.log(postKey)
+    //console.log(newVal)
     $.ajax({
         method:"PATCH",
         data:JSON.stringify({[newKey]:newVal}),
         url:`https://ajaxclass-1ca34.firebaseio.com/11g/teamd/posts/${postKey}.json`,
         success: response => {
-            console.log( response )
+            //console.log( response )
             //getPosts()
             if(newKey==="likes"){
-                console.log(postLike)
+                //console.log(postLike)
                 $(postLike).html(response.likes)
             }
            
@@ -77,10 +81,11 @@ const saveReplies = (objectReply) => {
     //$(event.target).data("mentorkey");
     $.ajax({
         method: "POST",
-        url: "https://ajaxclass-1ca34.firebaseio.com/11g/teamd/replies/.json",
+        url: "http://localhost:8080/replies",
+        contentType : "application/json",
         data: JSON.stringify(objectReply),
         success: (response) => {
-            console.log(response);
+            //console.log(response);
             printReplies(objectReply.post);
         },
         error: (error) => {
@@ -93,10 +98,10 @@ const getReplies = () => {
     let dbReplies;
     $.ajax({
         method: "GET",
-        url: "https://ajaxclass-1ca34.firebaseio.com/11g/teamd/replies/.json",
+        url: "http://localhost:8080/replies",
         success: (response) => {
 
-            dbReplies = response;
+            dbReplies = response.data.replies;
         },
         error: (error) => {
             console.log(error);
@@ -110,12 +115,13 @@ const getReplies = () => {
 const saveUsers = (objectUser) => {
     $.ajax({
         method: "POST",
-        url: "https://ajaxclass-1ca34.firebaseio.com/11g/teamd/users/.json",
+        url: "http://localhost:8080/users",
+        contentType : "application/json",
         data: JSON.stringify(objectUser),
         success: (response) => {
             console.log(response);
-            let aU = getUser(response.name)
-            setActiveUser(aU)
+            //let aU = getUser(response.name)
+            setActiveUser(response.data.users)
         },
         error: (error) => {
             console.log(error);
@@ -146,9 +152,9 @@ const getUser = (key) => {
     let dbUser = {}
     $.ajax({
       method: "GET",
-      url: `https://ajaxclass-1ca34.firebaseio.com/11g/teamd/users/${key}/.json`,
+      url: `http://localhost:8080/users/${key}`,
       success: (response) => {
-        dbUser = response;
+        dbUser = response.data.users;
       },
       error: (error) => {
         console.log(error);
@@ -241,7 +247,10 @@ let principalContainer = $('.total-container')
 let activeUser = {}
 let singlePostKey = ''
 $(document).ready(function () {
-    loadView("./views/landing.html", "landing")    
+    loadView("./views/landing.html", "landing")   
+    if(!activeUser._id){
+        $('.img-wrpr').hide() 
+    } 
 })
 $('.bttn-write').click(() => {
     loadView('./views/createPost.html')
@@ -350,22 +359,22 @@ const checkUserExist = () => {
     })
     inputGroup.val('')
     allUsers = getUsers()
-    $.each(allUsers, (idx, current) => {
-        //userExists.usermail === current.mail && userExists.userpassword === current.password ? activeUser = current : null
-        userExists.usermail === current.mail? activeUser = current : null
-    })
-    activeUser.userId != '' ? setActiveUser(activeUser) : alert("Nombre de usuario y/o contraseña incorrectos.")
+    activeUser= allUsers.find(current=>{return userExists.usermail === current.mail})
+    activeUser ? setActiveUser(activeUser): alert("Nombre de usuario y/o contraseña incorrectos.")
+    //console.log('ActiveUSer: ', activeUser)
+    
 }
 var activeID
 const setActiveUser = userData => {
-    if (l.length === 0){
+    //console.log('setActiveUSer: ', userData)
+    //if (l.length === 0){
         const {
             description,
             joined,
             location,
             mail,
             password,
-            userId,
+            _id:userId,
             userName,
             userNickname,
             userPic
@@ -373,14 +382,17 @@ const setActiveUser = userData => {
         $('#avt').attr('src', userPic)
         $('#active-user-name').text(userName)
         $('#active-user-nickname').text(userNickname)
+        console.log('ID user: ', userId)
         activeID = userId
         loadView("./views/home.html", "home")
-    }
+        $('.img-wrpr').show()
+   /* }
     else{
         $('#avt').attr('src', l.getItem('AvtImg'))
         $('#active-user-name').text(l.getItem('newUsN'))
         $('#active-user-nickname').text(l.getItem('newUsNname'))
-    }
+        
+    }*/
     
 }
 
@@ -450,14 +462,14 @@ const printHome = (allPostsToPrint) => {
             creationTime,
             duration,
             likes,
-            _id,
+            _id:postId,
             tags,
             title,
             userId
         } = allPostsToPrint[key]
 
         
-        let postId = allPostsToPrint[key]._id
+        //let postId = allPostsToPrint[key]._id
         
         let detalle = '#'
         let numberOfComments = 0
@@ -516,7 +528,7 @@ const printHome = (allPostsToPrint) => {
                 <img src=${postAuthor.userPic} alt="" class="rounded-circle profile-p ml-3" />
                 <div class="author-info ml-2">
                     <p>${postAuthor.userName}</p>
-                    <p>${creationDate}  ${creationTime} - ${moment(`${creationDate}`, "DD/MM/YYYY").fromNow()}</p>
+                    <p>${moment(creationDate).format('L')}  ${moment(creationDate).format('LT')} - ${moment(creationDate).startOf('day').fromNow()}</p>
                 </div>
             </div>
             <a href="#">
@@ -608,7 +620,7 @@ const getNewAccount = ()=>{
         }    
     })
     if(sendForm){
-        newAccount = {...newAccount, userId: new Date().getTime()}
+        newAccount = {...newAccount}
         //console.log(newAccount)
         $('#newAccount')[0].reset();
         saveUsers(newAccount)
@@ -617,8 +629,8 @@ const getNewAccount = ()=>{
         return false
     }
 
-    newAccount = {...newAccount, userId: new Date().getTime()}
-    saveUsers(newAccount)
+    //newAccount = {...newAccount, userId: new Date().getTime()}
+    //saveUsers(newAccount)
 }
 
 //Function Search Posts
@@ -693,6 +705,7 @@ const getPost = (postKey) => {
 
 //Print replies function
 const printReplies = (postId) => {
+    //console.log('print replies: ', postId)
     $(`#replies-wrapper li`).remove();
     let replies = getReplies();
     let repliesByPost = {};
@@ -727,8 +740,8 @@ const printReplies = (postId) => {
                                         
                                         <p class="mb-0 text-muted comment-text">${repliesByPost[key].content}</p>
                                         <p class="mb-0 text-right text-muted comment-date">
-                                            <span class="date">${repliesByPost[key].creationDate}</span> 
-                                            <span class="time">${repliesByPost[key].creationTime}</span>   
+                                            <span class="date">${moment(repliesByPost[key].creationDate).format('L')}</span> 
+                                            <span class="time">${moment(repliesByPost[key].creationDate).format('LT')}</span>   
                                         </p>
                                     </div>
                                 </li>
@@ -759,10 +772,10 @@ const printReplies = (postId) => {
   };
 
 const printSinglePost = (data) => {
-    
+    //console.log('enprintsingle', data)
     postAuthor = getAutor(data.userId, getUsers())  
-    console.log(data.content);
-    console.log(data.coverUrl);
+    //console.log(data.content);
+    //console.log(data.coverUrl);
     $(".post-wrapper .post-cover-img").attr("src", data.coverUrl);
     $(".post-wrapper .post-title").html(data.title);
 
@@ -778,20 +791,20 @@ const printSinglePost = (data) => {
         $('.post-wrapper .post-tags').append(`<span class="badge ${tag.replace("#", "").toLowerCase()} mr-2 p-badge font-weight-normal text-size-icon"><a href="#" data-tag-name="${tag}" class="btn-post-tag">${tag}</a></span>`)
     })    
     $(".total-container .perfil-avatar").attr("src", postAuthor.userPic);
-    console.log('autor',postAuthor)
+    //console.log('autor',postAuthor)
     $(".total-container .perfil-name").html(postAuthor.userNickname);
     $(".total-container .perfil-description").html(postAuthor.description);
     $(".total-container .perfil-work").html(postAuthor.work);
     $(".total-container .perfil-location").html(postAuthor.location);
     //$(".total-container .perfil-name").html(postAuthor.userNickname);
-    if(activeID>0){
+    if(activeID){
         userComment = getAutor(activeID, getUsers())        
         $(".post-wrapper .post-user-avatar").attr("src", userComment.userPic);
         
     }
     
-    $(".btn-save-replie").attr("data-commentkey", data.postId);
-    printReplies(data.postId);
+    $(".btn-save-replie").attr("data-commentkey", data._id);
+    printReplies(data._id);
 }
     //printSinglePost(getPost(postKey));
     //printSinglePost(getPost("-MYsPw9-8lhLZSCvtuRs"));
@@ -842,7 +855,7 @@ const addAttrToSelectTime = () =>{
             break
         case 'week':
             printHome(filterByDate(7, 'days'))
-            console.log($('#select-time option:selected'))
+            //console.log($('#select-time option:selected'))
             break
         case 'month':
             printHome(filterByDate(1, 'month'))
@@ -907,9 +920,11 @@ const newPost = () =>{
         $(`#tagsHelp`).attr("hidden", true);
     }
     if(sendForm){
-        newPostData = {...newPostData, tags: tagArray, userId : activeID, creationDate: moment().format('DD/MM/YYYY'), creationTime: moment().format('h:mm'), postId : Date.now(), likes: 0}
-        $('#write-new-post')[0].reset()
+        newPostData = {...newPostData, tags: tagArray, userId : activeID}
+        //console.log(newPostData)
+        
         savePosts(newPostData)
+        $('#write-new-post')[0].reset()
         loadView('views/home.html','home')
     }else{
         return false
@@ -923,7 +938,7 @@ const setNewLike = (event) =>{
     let allPostsToLike = getPosts()
     let postKeyToLike = event.target.dataset
     let numOfLikes = event.target.text
-    console.log(numOfLikes)
+    //console.log(numOfLikes)
     let postToLike = {}
     for(post in allPostsToLike){
         post === postKeyToLike.postkey ? postToLike = {...postToLike, [post]: allPostsToLike[post]} : null
@@ -931,8 +946,8 @@ const setNewLike = (event) =>{
     Object.values(postToLike)[0].likes +=1
     let likes = Object.keys(Object.values(postToLike)[0])[5]
     let numOfLikesUploaded = Object.values(postToLike)[0].likes
-    console.log(likes + ' : ' + numOfLikesUploaded)
-    console.log(postToLike)
+    //console.log(likes + ' : ' + numOfLikesUploaded)
+    //console.log(postToLike)
     patchPost(event, numOfLikesUploaded, likes)
     //location.reload()
     
@@ -979,21 +994,18 @@ $('.total-container').on('click','.btn-save-replie',function(event){
     let postId = $(event.target).data("commentkey");
     let comment = $(`#post-reply`).val();
     
-    if(activeID>0){
+    if(activeID){
         newReply={
             content: comment,
-            creationDate: moment().format("l"),
-            creationTime: moment().format("LT"),
             post: postId,
-            userId: activeID,
-            replyId: Date.now()
+            userId: activeID
         }
-        console.log(postId,comment,activeID,newReply)
+        //console.log(postId,comment,activeID,newReply)
         $(`#post-reply`).val("");
         saveReplies(newReply)
     }else{
-        console.log("Debe loguearse para poder commentar",activeID)
-        logIn=confirm('Para comentar debe iniciar sessión, ¿Desea iniciar seción ahora?')
+        //console.log("Debe loguearse para poder commentar",activeID)
+        logIn=confirm('Para comentar debe iniciar sessión, ¿Desea iniciar sesión ahora?')
         if(logIn){
             loadView('./views/login.html','login')
         }
@@ -1024,7 +1036,7 @@ const printAside = () => {
         } = postList[post]
 
         if (post === firstPostKey) {
-            let asideFirst =` <a class ='go-to-detail'><img class="w-100" src="${coverUrl}" alt="card-img" data-postkey="${post}"></a>
+            let asideFirst =` <a class ='go-to-detail'><img class="w-100" src="https://challenge-devto-e8kjdgmde-mgbelmont.vercel.app/images/single/image_side_right.png" alt="card-img" data-postkey="${post}"></a>
 
             <header class="py-3 border-bottom">
               <a href="#">
@@ -1076,23 +1088,23 @@ $('.total-container').on('click', '.go-to-detail', function (event) {
 let l = localStorage
 $('.total-container').on('focusout', '#userPic' ,function(){
     l.setItem('AvtImg', $('#userPic').val())
-    console.log(l.getItem('AvtImg'))
+    //console.log(l.getItem('AvtImg'))
 })
 $('.total-container').on('focusout', '#mail' ,function(){
     l.setItem('mail', $('#mail').val())
-    console.log(l.getItem('mail'))
+    //console.log(l.getItem('mail'))
 })
 $('.total-container').on('focusout', '#password' ,function(){
     l.setItem('psd', $('#password').val())
-    console.log(l.getItem('psd'))
+    //console.log(l.getItem('psd'))
 })
 $('.total-container').on('focusout', '#userName' ,function(){
     l.setItem('newUsN', $('#userName').val())
-    console.log(l.getItem('newUsN'))
+    //console.log(l.getItem('newUsN'))
 })
 $('.total-container').on('focusout', '#userNickName' ,function(){
     l.setItem('newUsNname', $('#userNickName').val())
-    console.log(l.getItem('newUsNname'))
+   // console.log(l.getItem('newUsNname'))
 })
 $('#devto-logo').on('click', '#devto-logo',function(){
     l.length != 0 ? l.setItem('ID', activeID) : null
