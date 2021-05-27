@@ -660,12 +660,20 @@ header .nav .nav-item .active:hover::after {
 }
 
 #right-menu {
+  position: absolute;
+  z-index: 9999;
+  top: 117%;
   width: 15rem;
+  background-color: #f9fafa;
+  right: 0;
+}
+
+#right-menu div {
+  width: 100%;
 }
 
 #right-menu .container-login {
   border-bottom: 1px solid #b5bdc4;
-  padding: 0 4%;
   margin-top: 4%;
 }
 
@@ -681,7 +689,6 @@ header .nav .nav-item .active:hover::after {
 
 #right-menu .container-home {
   border-bottom: 1px solid #b5bdc4;
-  padding: 0 4%;
   margin-top: 4%;
 }
 
@@ -692,7 +699,6 @@ header .nav .nav-item .active:hover::after {
 }
 
 #right-menu .container-logout {
-  padding: 0 4%;
   margin-top: 4%;
 }
 

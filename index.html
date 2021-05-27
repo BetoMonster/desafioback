@@ -60,34 +60,12 @@
     </div>
   </div>
 
-  <!--Menú emergente derecha-->
-  <div class="container w-100">
-    <div class="collapse-2" id="right-menu">
-      <div class="container rounded" style="border: 1px solid black; box-shadow: 2px 2px 2px 2px black">
-        <div class="row flex-column pl-2 container-login">
-          <div class="col-12"><a id="login-a">Log in</a></div>
-          <div class="col-12"><a id="create-user-a">Create Account</a>
-          </div>
-        </div>
-        <div class="row flex-column pl-2 container-home">
-          <div class="col-12 font-weight-bold d-none" id="active-user-name" style="font-size: 1rem"></div>
-          <div class="col-12 text-muted  d-none" id="active-user-nickname"></div>
-          <div class="col-12">Dashboard</div>
-          <div class="col-12">Write a Post</div>
-          <div class="col-12">Reading list</div>
-          <div class="col-12">Settings</div>
-        </div>
-        <div class="row flex-column pl-2 container-logout">
-          <div class="col-12"><a id="sign-out">Sign Out</a></div>
-        </div>
-      </div>
-    </div>
-  </div>
+
 
   <!--Navbar-->
   <div class="nav-wrapper bg-white sticky-top">
     <nav
-      class="navbar">
+      class="navbar ">
       <div class="left-wrpr d-flex">
         <button class="navbar-toggler d-sm-none" type="button" data-toggle="collapse" data-target="#left-menu"
           aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -122,7 +100,33 @@
         </button>
 
       </div>
-    </nav>    
+
+
+  <!--Menú emergente derecha-->
+  <!-- <div class="container w-100"> -->
+    <div class="collapse" id="right-menu">
+      <div class="container rounded" style="border: 1px solid black; box-shadow: 2px 2px 2px 2px black">
+        <div class=" container-login">
+          <div class="col-12"><a id="login-a">Log in</a></div>
+          <div class="col-12"><a id="create-user-a">Create Account</a>
+          </div>
+        </div>
+        <div class=" container-home">
+          <div class="col-12 font-weight-bold d-none" id="active-user-name" style="font-size: 1rem"></div>
+          <div class="col-12 text-muted  d-none" id="active-user-nickname"></div>
+          <div class="col-12">Dashboard</div>
+          <div class="col-12">Write a Post</div>
+          <div class="col-12">Reading list</div>
+          <div class="col-12">Settings</div>
+        </div>
+        <div class=" container-logout">
+          <div class="col-12"><a id="sign-out">Sign Out</a></div>
+        </div>
+      </div>
+    </div>
+  <!-- </div> -->
+
+    </nav>
   </div>
 
   <div class="total-container">
