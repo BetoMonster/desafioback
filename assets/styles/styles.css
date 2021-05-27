@@ -607,6 +607,15 @@ textarea {
   color: #f9fafa !important;
 }
 
+.nav-wrapper .navbar {
+  width: 100%;
+  max-width: 1240px;
+  margin: 0 auto;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
 header h3 {
   font-size: 22px;
   font-weight: bold;

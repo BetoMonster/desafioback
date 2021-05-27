@@ -88,11 +88,23 @@
 }
 }
 
+.nav-wrapper{
+        
+    .navbar{
+        width: 100%;
+        max-width: 1240px;
+        margin: 0 auto;
+        display: flex;
+    }
+}
+
+
 header {
     h3 {
         font-size: 22px;
         font-weight: bold;
     }
+
 .nav{
     
     .nav-item{
