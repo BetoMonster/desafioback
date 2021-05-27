@@ -2,7 +2,7 @@
 
 // -------- CRUD POSTS -----------
 const savePosts = (objectPost) => {
-    console.log(JSON.stringify(objectPost))
+    //console.log(JSON.stringify(objectPost))
     $.ajax({
         method: "POST",
         url: "http://localhost:8080/posts",
@@ -10,7 +10,7 @@ const savePosts = (objectPost) => {
         data: JSON.stringify(objectPost),
         dataType : 'json',
         success: (response) => {
-            console.log(response);
+            //console.log(response);
         },
         error: (error) => {
             console.log(error);
@@ -40,17 +40,17 @@ const getPosts = () => {
 const patchPost = (event, newVal, newKey) => {
     let postKey = event.target.dataset.postkey
     let postLike = event.target
-    console.log(postKey)
-    console.log(newVal)
+    //console.log(postKey)
+    //console.log(newVal)
     $.ajax({
         method:"PATCH",
         data:JSON.stringify({[newKey]:newVal}),
         url:`https://ajaxclass-1ca34.firebaseio.com/11g/teamd/posts/${postKey}.json`,
         success: response => {
-            console.log( response )
+            //console.log( response )
             //getPosts()
             if(newKey==="likes"){
-                console.log(postLike)
+                //console.log(postLike)
                 $(postLike).html(response.likes)
             }
            
@@ -85,7 +85,7 @@ const saveReplies = (objectReply) => {
         contentType : "application/json",
         data: JSON.stringify(objectReply),
         success: (response) => {
-            console.log(response);
+            //console.log(response);
             printReplies(objectReply.post);
         },
         error: (error) => {
@@ -705,7 +705,7 @@ const getPost = (postKey) => {
 
 //Print replies function
 const printReplies = (postId) => {
-    console.log('print replies: ', postId)
+    //console.log('print replies: ', postId)
     $(`#replies-wrapper li`).remove();
     let replies = getReplies();
     let repliesByPost = {};
@@ -772,10 +772,10 @@ const printReplies = (postId) => {
   };
 
 const printSinglePost = (data) => {
-    console.log('enprintsingle', data)
+    //console.log('enprintsingle', data)
     postAuthor = getAutor(data.userId, getUsers())  
-    console.log(data.content);
-    console.log(data.coverUrl);
+    //console.log(data.content);
+    //console.log(data.coverUrl);
     $(".post-wrapper .post-cover-img").attr("src", data.coverUrl);
     $(".post-wrapper .post-title").html(data.title);
 
@@ -791,7 +791,7 @@ const printSinglePost = (data) => {
         $('.post-wrapper .post-tags').append(`<span class="badge ${tag.replace("#", "").toLowerCase()} mr-2 p-badge font-weight-normal text-size-icon"><a href="#" data-tag-name="${tag}" class="btn-post-tag">${tag}</a></span>`)
     })    
     $(".total-container .perfil-avatar").attr("src", postAuthor.userPic);
-    console.log('autor',postAuthor)
+    //console.log('autor',postAuthor)
     $(".total-container .perfil-name").html(postAuthor.userNickname);
     $(".total-container .perfil-description").html(postAuthor.description);
     $(".total-container .perfil-work").html(postAuthor.work);
@@ -855,7 +855,7 @@ const addAttrToSelectTime = () =>{
             break
         case 'week':
             printHome(filterByDate(7, 'days'))
-            console.log($('#select-time option:selected'))
+            //console.log($('#select-time option:selected'))
             break
         case 'month':
             printHome(filterByDate(1, 'month'))
@@ -921,11 +921,11 @@ const newPost = () =>{
     }
     if(sendForm){
         newPostData = {...newPostData, tags: tagArray, userId : activeID}
-        console.log(newPostData)
+        //console.log(newPostData)
         
         savePosts(newPostData)
-        //$('#write-new-post')[0].reset()
-        //loadView('views/home.html','home')
+        $('#write-new-post')[0].reset()
+        loadView('views/home.html','home')
     }else{
         return false
     }    
@@ -938,7 +938,7 @@ const setNewLike = (event) =>{
     let allPostsToLike = getPosts()
     let postKeyToLike = event.target.dataset
     let numOfLikes = event.target.text
-    console.log(numOfLikes)
+    //console.log(numOfLikes)
     let postToLike = {}
     for(post in allPostsToLike){
         post === postKeyToLike.postkey ? postToLike = {...postToLike, [post]: allPostsToLike[post]} : null
@@ -946,8 +946,8 @@ const setNewLike = (event) =>{
     Object.values(postToLike)[0].likes +=1
     let likes = Object.keys(Object.values(postToLike)[0])[5]
     let numOfLikesUploaded = Object.values(postToLike)[0].likes
-    console.log(likes + ' : ' + numOfLikesUploaded)
-    console.log(postToLike)
+    //console.log(likes + ' : ' + numOfLikesUploaded)
+    //console.log(postToLike)
     patchPost(event, numOfLikesUploaded, likes)
     //location.reload()
     
@@ -1000,12 +1000,12 @@ $('.total-container').on('click','.btn-save-replie',function(event){
             post: postId,
             userId: activeID
         }
-        console.log(postId,comment,activeID,newReply)
+        //console.log(postId,comment,activeID,newReply)
         $(`#post-reply`).val("");
         saveReplies(newReply)
     }else{
-        console.log("Debe loguearse para poder commentar",activeID)
-        logIn=confirm('Para comentar debe iniciar sessión, ¿Desea iniciar seción ahora?')
+        //console.log("Debe loguearse para poder commentar",activeID)
+        logIn=confirm('Para comentar debe iniciar sessión, ¿Desea iniciar sesión ahora?')
         if(logIn){
             loadView('./views/login.html','login')
         }
