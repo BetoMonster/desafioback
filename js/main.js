@@ -249,7 +249,7 @@ let singlePostKey = ''
 $(document).ready(function () {
     loadView("./views/landing.html", "landing")   
     if(!activeUser._id){
-        //$('.img-wrpr').hide() 
+        $('.img-wrpr').hide() 
     } 
 })
 $('.bttn-write').click(() => {
@@ -385,7 +385,7 @@ const setActiveUser = userData => {
         console.log('ID user: ', userId)
         activeID = userId
         loadView("./views/home.html", "home")
-        //$('.img-wrpr').show()
+        $('.img-wrpr').show()
    /* }
     else{
         $('#avt').attr('src', l.getItem('AvtImg'))
